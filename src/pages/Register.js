@@ -1,13 +1,11 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import {
-  MDBBtn,
   MDBContainer,
   MDBRow,
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBIcon,
   MDBCheckbox
 } from 'mdb-react-ui-kit';
 import * as yup from 'yup';
@@ -17,8 +15,10 @@ import { registerUser } from '../features/user/userSlide';
 
 const RegisterSchema = yup.object({
   name: yup.string().required('Name is required'),
-  email: yup.string().nullable().email('Invalid email address'),
+  email: yup.string().email('Invalid email address').required('Email is required'),
   password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('Confirm Password is required'),
+  agreeTerms: yup.bool().oneOf([true], 'You must agree to the terms of service'),
 });
 
 const Register = () => {
@@ -28,10 +28,12 @@ const Register = () => {
       name: '',
       email: '',
       password: '',
+      confirmPassword: '',
+      agreeTerms: false,
     },
     validationSchema: RegisterSchema,
     onSubmit: (values) => {
-      dispatch(registerUser(values)); //
+      dispatch(registerUser(values));
     },
   });
 
@@ -45,37 +47,63 @@ const Register = () => {
               <p className="text-white-50 mb-5">Please enter your login and password!</p>
               <form onSubmit={formik.handleSubmit}>
                 <div className="d-flex flex-column align-items-center">
-                  <Custominput
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    className="text-white"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.name && formik.errors.name}
-                  />
-                  <Custominput
-                    type="email"
-                    name="email"
-                    placeholder="Email address"
-                    className="text-white"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.email && formik.errors.email}
-                  />
-                  <Custominput
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    className="text-white"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.password && formik.errors.password}
-                  />
-                  <div className='d-flex justify-content-center align-items-center mb-4 mx-5 w-100'>
+                  <div className="col-md-11 mb-4">
+                    <Custominput
+                      type="text"
+                      name="name"
+                      placeholder="Name"
+                      className="text-black"
+                      value={formik.values.name}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    <div className='error' style={{ minHeight: '1.5em' }}>
+                      {formik.touched.name && formik.errors.name}
+                    </div>
+                  </div>
+                  <div className="col-md-11 mb-4">
+                    <Custominput
+                      type="email"
+                      name="email"
+                      placeholder="Email address"
+                      className="text-black"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    <div className='error' style={{ minHeight: '1.5em' }}>
+                      {formik.touched.email && formik.errors.email}
+                    </div>
+                  </div>
+                  <div className="col-md-11 mb-4">
+                    <Custominput
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      className="text-black"
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    <div className='error' style={{ minHeight: '1.5em' }}>
+                      {formik.touched.password && formik.errors.password}
+                    </div>
+                  </div>
+                  <div className="col-md-11 mb-4">
+                    <Custominput
+                      type="password"
+                      name="confirmPassword"
+                      placeholder="Confirm Password"
+                      className="text-black"
+                      value={formik.values.confirmPassword}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    <div className='error' style={{ minHeight: '1.5em' }}>
+                      {formik.touched.confirmPassword && formik.errors.confirmPassword}
+                    </div>
+                  </div>
+                  <div className='d-flex justify-content-center align-items-center mt-4 mb-4 mx-5 w-100'>
                     <MDBCheckbox
                       name='agreeTerms'
                       id='agreeTerms'
@@ -84,23 +112,26 @@ const Register = () => {
                       onBlur={formik.handleBlur}
                       checked={formik.values.agreeTerms}
                     />
+                    <div className='error' style={{ minHeight: '1.5em' }}>
+                      {formik.touched.agreeTerms && formik.errors.agreeTerms}
+                    </div>
                   </div>
                 </div>
-                <button type="submit" className="mb-5 col-6 btn Registerbtn">Register</button>
+                <div className='d-flex justify-content-center align-items-center'>
+                  <button type="submit" disabled={!formik.values.agreeTerms} className="mb-5 col-6 btn Registerbtn">
+                    Register
+                  </button>
+                </div>
               </form>
-              <div className='d-flex flex-row mt-3 mb-5'>
-                <MDBBtn tag='a' color='none' className='m-3' style={{ color: 'white' }}>
-                  <MDBIcon fab icon='facebook-f' size="lg" />
-                </MDBBtn>
-                <MDBBtn tag='a' color='none' className='m-3' style={{ color: 'white' }}>
-                  <MDBIcon fab icon='twitter' size="lg" />
-                </MDBBtn>
-                <MDBBtn tag='a' color='none' className='m-3' style={{ color: 'white' }}>
-                  <MDBIcon fab icon='google' size="lg" />
-                </MDBBtn>
-              </div>
               <div>
-                <p className="mb-0">Have already an account? <a href="http://localhost:3000/login#!!" className="text-white-50 fw-bold">Login</a></p>
+              </div>
+              <div className='text-center'>
+                <p className="mb-0">
+                  Have already an account?{' '}
+                  <a href="http://localhost:3000/login#!!" className="text-white-50 fw-bold">
+                    Login
+                  </a>
+                </p>
               </div>
             </MDBCardBody>
           </MDBCard>

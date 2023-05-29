@@ -1,7 +1,13 @@
 import axios from "axios";
-import { base_url } from '../../utils/axiosConfig';
+
 const register = async (userData) => {
-    const response = await axios.post(`${base_url}user/register`, userData);
+    console.log(userData);
+    const response = await axios.post("http://localhost:5000/api/user/register", userData).then((res) =>{
+        console.log(res);
+    }).catch((error) =>{
+        console.log(error);
+    }
+    )
     if (response.data) {
         return response.data;
     }

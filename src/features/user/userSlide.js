@@ -7,7 +7,14 @@ export const registerUser = createAsyncThunk("auth/register", async (userData, t
     try {
         return await authService.register(userData);
     } catch (error) {
-        return thunkAPI.rejectWithValue(error);
+        // แปลง AxiosError เป็น object ที่สามารถ serialize ได้
+        const serializableError = {
+          message: error.message,
+          name: error.name,
+          code: error.code,
+          // เพิ่ม properties อื่น ๆ จาก AxiosError ที่คุณต้องการแปลง
+        };
+        return thunkAPI.rejectWithValue(serializableError);
     }
 });
 
@@ -32,9 +39,9 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
-                state.createUser = action.payload
-                if(state.isSuccess === true){
-                    toast.info("User Create Success")
+                state.createdUser = action.payload;
+                if (state.isSuccess === true) {
+                    toast.info("User Create Success");
                 }
             })
             .addCase(registerUser.rejected, (state, action) => {
@@ -42,8 +49,8 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
-                if(state.isError === true){
-                    toast.error(action.error)
+                if (state.isError === true) {
+                    toast.error(action.error);
                 }
             });
     },

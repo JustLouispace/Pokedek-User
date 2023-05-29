@@ -13,6 +13,8 @@ const Custominput = (props) => {
         value={value}
         onChange={onChange}
         onBlur={onBlur}
+        style={{ fontSize: '22px' }} // Adjust the font size here
+
       />
       {error && <p className="error-message">{error}</p>}
     </div>
