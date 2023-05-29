@@ -12,19 +12,19 @@ const Home = () => {
           <Slide />
         </div>
         <div className="Home-bottom d-flex justify-content-center" style={{ gap: '50px' }}>
-        <Tooltip title="Delete">
-          <Link to="/explore-pokemon" className="mb-5 col-3 btn homebtn btn-dark">Explore Pokemon</Link>
-        </Tooltip>
+          <Tooltip title="Delete">
+            <Link to="/explore-pokemon" className="mb-5 col-3 btn homebtn btn-dark">Explore Pokemon</Link>
+          </Tooltip>
           <Link to="/trainer" className="mb-5 col-3 btn homebtn btn-dark">Trainer</Link>
         </div>
       </div>
-      <div className="h1 p-3 h-100 recommnedbar">
+      <div className="h1 p-3 recommnedbar">
         Recommed Card
       </div>
-      <div className='mb-4 mt-4'>
-      <CardSlide/>
+      <div className="mt-3 mb-3 cardSlideContainer">
+        <CardSlide />
       </div>
-      </div>
+    </div>
   );
 }
 

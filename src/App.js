@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Layout from './components/Layout';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Login from './pages/Login';
+import Register from './pages/Register';
 function App() {
   return (
     <>
@@ -14,6 +16,8 @@ function App() {
             <Route index element={<Home />} />
             <Route path="about" element={<About />}></Route>
             <Route path="contact" element={<Contact />}></Route>
+            <Route path="Login" element={<Login />}></Route>
+            <Route path="Register" element={<Register />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
