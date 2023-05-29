@@ -13,7 +13,7 @@ import {
 import * as yup from 'yup';
 import Custominput from '../components/Custominput';
 import { useDispatch } from 'react-redux';
-import { registerUser } from './features/user/userSlide';
+import { registerUser } from '../features/user/userSlide';
 
 const RegisterSchema = yup.object({
   name: yup.string().required('Name is required'),
