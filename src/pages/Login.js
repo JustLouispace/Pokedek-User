@@ -10,21 +10,26 @@ import {
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import Custominput from '../components/Custominput';
+import { useDispatch } from 'react-redux';
+import { LoginUser } from '../features/user/userSlide';
+
 
 const LoginSchema = yup.object({
   email: yup.string().email('Invalid email address').required('Email is required'),
   password: yup.string().required('Password is required'),
 });
 
-function Login() {
+const Login = () => {
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
+
     },
     validationSchema: LoginSchema,
     onSubmit: (values) => {
-      // Handle form submission
+      dispatch(LoginUser(values));
     },
   });
 
@@ -81,7 +86,7 @@ function Login() {
                 </div>
                 <div className='d-flex justify-content-center align-items-center'>
                   <button type="submit" disabled={!formik.values.agreeTerms} className="mb-5 col-6 btn Registerbtn">
-                    Register
+                    Login
                   </button>
                 </div>
               </form>

@@ -7,12 +7,23 @@ export const registerUser = createAsyncThunk("auth/register", async (userData, t
     try {
         return await authService.register(userData);
     } catch (error) {
-        // แปลง AxiosError เป็น object ที่สามารถ serialize ได้
         const serializableError = {
-          message: error.message,
-          name: error.name,
-          code: error.code,
-          // เพิ่ม properties อื่น ๆ จาก AxiosError ที่คุณต้องการแปลง
+            message: error.message,
+            name: error.name,
+            code: error.code,
+        };
+        return thunkAPI.rejectWithValue(serializableError);
+    }
+});
+
+export const LoginUser = createAsyncThunk("auth/login", async (userData, thunkAPI) => {
+    try {
+        return await authService.login(userData);
+    } catch (error) {
+        const serializableError = {
+            message: error.message,
+            name: error.name,
+            code: error.code,
         };
         return thunkAPI.rejectWithValue(serializableError);
     }
@@ -41,10 +52,33 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 state.createdUser = action.payload;
                 if (state.isSuccess === true) {
-                    toast.info("User Create Success");
+                    toast.info("User Create Successfully");
                 }
             })
             .addCase(registerUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                if (state.isError === true) {
+                    toast.error(action.error);
+                }
+            })
+            .addCase(LoginUser.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(LoginUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.user = action.payload;
+
+                if (state.isSuccess === true) {
+                    localStorage.setItem("token",action.payload.token);
+                    toast.info("User logged In ");
+                }
+            })
+            .addCase(LoginUser.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
