@@ -55,7 +55,7 @@ const Header = () => {
               <div className="row justify-content-lg-end">
                 <div className="col-auto">
                   <Link
-                    to="/all-card"
+                    to="/PokemonCollection"
                     className="d-flex align-items-center gap-10 text-white"
                   >
                     <CgPokemon size={30} alt="All Card" />

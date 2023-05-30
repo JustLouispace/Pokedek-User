@@ -3,6 +3,15 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.bg-gray {
+  background-color: rgb(100, 99, 99);
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
 :root {
   --color-131921: #131415;
   --color-2b2b2: #373738;
@@ -42,7 +51,7 @@ a {
   align-items: center;
 }
 
-.container-xxl{
+.container-xxl {
   max-width: 100rem;
 }
 .box-wrapper {
@@ -58,6 +67,9 @@ a {
   gap: 1rem;
 }
 
+.gap-20 {
+  gap: 4rem;
+}
 .gap-30 {
   gap: 30rem;
 }
@@ -67,19 +79,16 @@ a {
   height: 4rem;
 }
 
-
 /* EndHeader */
 
-
 /* Footer */
-#Footer1{
+#Footer1 {
   background-color: var(--color-7d7d7d);
 }
 
-
-#BGfooter{
+#BGfooter {
   background-color: var(--color-131921);
-  color: white
+  color: white;
 }
 
 /* End Footer */
@@ -95,7 +104,7 @@ a {
 
 /* Home */
 
-#Home-bottom{
+#Home-bottom {
   align-items: center;
 }
 
@@ -105,8 +114,7 @@ a {
 
 .homebtn {
   background-color: var(--color-2b2b2);
-  color: #fff; 
- 
+  color: #fff;
 }
 
 .recommnedbar {
@@ -130,20 +138,56 @@ a {
 
 /* Login */
 .login-container {
-  background: linear-gradient(90deg, rgba(255,145,98,1) 0%, rgba(255,173,69,0.8239670868347339) 49%, rgba(255,219,96,0.700717787114846) 89%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 145, 98, 1) 0%,
+    rgba(255, 173, 69, 0.8239670868347339) 49%,
+    rgba(255, 219, 96, 0.700717787114846) 89%
+  );
 }
 
-.Loginbtn{
+.Loginbtn {
   background-color: var(--color-9e9e9e);
 }
 /* End Login */
 
 /* Register */
 .Register-container {
-  background: linear-gradient(90deg, rgba(255,145,98,1) 0%, rgba(255,173,69,0.8239670868347339) 49%, rgba(255,219,96,0.700717787114846) 89%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 145, 98, 1) 0%,
+    rgba(255, 173, 69, 0.8239670868347339) 49%,
+    rgba(255, 219, 96, 0.700717787114846) 89%
+  );
 }
-.Registerbtn{
+.Registerbtn {
   background-color: var(--color-9e9e9e);
 }
 
 /* End Register */
+
+/* .container-sorted{
+  background-color: #666666;
+} */
+
+/* Pokemon Colec */
+.icon-element {
+  width: 3.2rem;
+  align-items: center;
+}
+
+.space-between {
+  margin-left: 10px;
+  margin-right: 50px; /* Adjust the margin value as per your preference */
+}
+
+.white-text {
+  color: white;
+}
+
+.centered-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+/* End Pokemon Colec */

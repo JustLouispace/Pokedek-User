@@ -7,6 +7,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import  PokemonCollection  from './pages/PokemonCollection';
 function App() {
   return (
     <>
@@ -16,8 +17,9 @@ function App() {
             <Route index element={<Home />} />
             <Route path="about" element={<About />}></Route>
             <Route path="contact" element={<Contact />}></Route>
-            <Route path="Login" element={<Login />}></Route>
+            <Route path="Login" element={<Login />}></Route>PokemonCollection
             <Route path="Register" element={<Register />}></Route>
+            <Route path="PokemonCollection" element={<PokemonCollection />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
