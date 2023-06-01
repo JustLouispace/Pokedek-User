@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import Slider from '@mui/material/Slider';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts } from '../features/Product/ProductSlice';
+import ProductCard from '../components/ProductCard';
 
 function valuetext(value) {
   return `${value}°C`;
@@ -10,19 +13,6 @@ function valuetext(value) {
 const minDistance = 10;
 
 export const PokemonCollection = () => {
-  const [value1, setValue1] = React.useState([20, 37]);
-
-  const handleChange1 = (event, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
-
-    if (activeThumb === 0) {
-      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
-    } else {
-      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
-    }
-  };
 
   const [value2, setValue2] = React.useState([20, 37]);
 
@@ -43,6 +33,26 @@ export const PokemonCollection = () => {
       setValue2(newValue);
     }
   };
+
+  const productState = useSelector((state) => state.product.product);
+  console.log(productState);
+  const dispatch = useDispatch();
+
+  const getProducts = () => {
+    dispatch(getAllProducts());
+  };
+
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const uniqueProducts = Array.isArray(productState)
+    ? Array.from(new Set(productState.map((product) => product.id)))
+      .map((id) => {
+        return productState.find((product) => product.id === id);
+      })
+    : [];
 
 
 
@@ -199,17 +209,18 @@ export const PokemonCollection = () => {
             />
           </div>
         </div>
-        <div className="d-flex justify-content-center">
-          <Stack direction="row" spacing={6} style={{}}>
-            <div><img src="images/Card1.png" alt="Start Icon" className="mb-3" /></div>
-            <div><img src="images/Card1.png" alt="Start Icon" className="mb-3" /></div>
-            <div><img src="images/Card1.png" alt="Start Icon" className="mb-3" /></div>
-            <div><img src="images/Card1.png" alt="Start Icon" className="mb-3" /></div>
-            <div><img src="images/Card1.png" alt="Start Icon" className="mb-3" /></div>
-          </Stack>
+        <div className="d-flex justify-content-center all">
+          <div className="row row-cols-6 g-4 justify-content-center">
+            {uniqueProducts.map((product, index) => (
+              <div className="col mx-4" key={index}>
+                <ProductCard data={product} />
+              </div>
+            ))}
+          </div>
         </div>
+
       </div>
-    </div >
+    </div>
   );
 };
 
