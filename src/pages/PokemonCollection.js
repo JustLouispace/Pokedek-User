@@ -34,7 +34,7 @@ export const PokemonCollection = () => {
     }
   };
 
-  const productState = useSelector((state) => state.product.product);
+  const productState = useSelector((state) => state?.product?.product);
   console.log(productState);
   const dispatch = useDispatch();
 

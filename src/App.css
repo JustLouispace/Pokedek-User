@@ -134,6 +134,11 @@ a {
   padding: 0;
 }
 
+.action-bar {
+  top: 20%;
+  right: -30px;
+}
+
 /* End Card Slid*/
 
 /* Login */

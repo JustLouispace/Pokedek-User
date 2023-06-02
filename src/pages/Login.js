@@ -95,8 +95,8 @@ const Login = () => {
               <div className='text-center'>
                 <p className="mb-0">
                   Have already an account?{' '}
-                  <a href="http://localhost:3000/login#!!" className="text-white-50 fw-bold">
-                    Login
+                  <a href="http://localhost:3000/Register" className="text-white-50 fw-bold">
+                    Register
                   </a>
                 </p>
               </div>
