@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { authService } from "./userService";
 import { toast } from "react-toastify";
-
+import jwtDecode from 'jwt-decode';
 
 export const registerUser = createAsyncThunk("auth/register", async (userData, thunkAPI) => {
     try {
@@ -29,9 +29,11 @@ export const LoginUser = createAsyncThunk("auth/login", async (userData, thunkAP
     }
 });
 
+
+
 const getCustomerfromLocalStorage = localStorage.getItem("customer")
-  ? JSON.parse(localStorage.getItem("customer"))
-  : null;
+    ? JSON.parse(localStorage.getItem("customer"))
+    : null;
 
 const initialState = {
     user: getCustomerfromLocalStorage,
@@ -78,7 +80,14 @@ export const authSlice = createSlice({
                 state.user = action.payload;
 
                 if (state.isSuccess === true) {
-                    localStorage.setItem("token",action.payload.token);
+                    const token = action.payload.token;
+                    localStorage.setItem("token", token);
+
+                    const decodedToken = jwtDecode(token);
+                    const userId = decodedToken.id || decodedToken._id;  // depends on how the id is named in the payload of the token
+
+                    localStorage.setItem("userId", userId);
+
                     toast.info("User logged In ");
                 }
             })

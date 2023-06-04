@@ -11,7 +11,18 @@ export const getAllProducts = createAsyncThunk("product/get", async (thunkAPI) =
 
 );
 
+export const getAProduct = createAsyncThunk("product/geta", async (id, thunkAPI) => {
+    try {
+        return await productService.getAProduct();
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    };
+}
+
+);
+
 export const addToMyCollection = createAsyncThunk("product/addtomycollection", async (prodId, thunkAPI) => {
+    console.log(prodId);
     try {
         return await productService.addToMyCollection(prodId);
     } catch (error) {

@@ -5,6 +5,10 @@ import { MdCollectionsBookmark, MdSettings } from "react-icons/md";
 import { AiOutlineUser } from "react-icons/ai";
 import { GoRequestChanges } from "react-icons/go";
 import { CgPokemon } from "react-icons/cg";
+import jwtDecode from 'jwt-decode';
+
+
+const userId = localStorage.getItem("userId");
 
 const Header = () => {
   return (
@@ -64,7 +68,7 @@ const Header = () => {
                 </div>
                 <div className="col-auto">
                   <Link
-                    to="/my-collection"
+                    to={`/my-collection/${userId}`}
                     className="d-flex align-items-center gap-10 text-white"
                   >
                     <MdCollectionsBookmark size={30} alt="My Collection" />

@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
-import { Link, } from 'react-router-dom';
-import { useDispatch, } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { addToMyCollection } from '../features/Product/ProductSlice';
-
-
 
 const ProductCard = (props) => {
     const { data, linkTo } = props;
     const dispatch = useDispatch();
-    console.log(data);
     const addToMy = (id) => {
-        console.log(id);
-        dispatch(addToMyCollection(id))
-    }
-
-
+        dispatch(addToMyCollection(id));
+    };
 
     const [isHovered, setIsHovered] = useState(false);
 
@@ -30,10 +24,9 @@ const ProductCard = (props) => {
         position: 'relative',
         opacity: isHovered ? 0.8 : 1,
         transition: 'opacity 0.3s ease',
+        height: '200px', // Set the desired height for the card
+        width: '200px', // Set the desired width for the card
     };
-
-
-
 
     return (
         <Link to={linkTo} style={{ textDecoration: 'none' }}>
@@ -44,13 +37,15 @@ const ProductCard = (props) => {
             >
                 {data ? (
                     <div>
-                        <img src={data.images.small} alt="Product" className="mb-3" />
+                        <img src={data.images[0].url} alt="Product" className="mb-3" 
+                        style={{ width: '18rem', height: '22rem' }}
+                        
+                        />
                         {isHovered && (
                             <button
                                 className="btn btn-primary"
-                                style={{ position: 'absolute', top: 0, right: 0 }}
+                                style={{}}
                                 onClick={(e) => addToMy(data._id)}
-
                             >
                                 Button
                             </button>
