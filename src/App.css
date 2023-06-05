@@ -12,6 +12,10 @@
   font-weight: bold;
 }
 
+.bolder-text {
+  font-weight: bolder;
+}
+
 :root {
   --color-131921: #131415;
   --color-2b2b2: #373738;
