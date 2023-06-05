@@ -31,6 +31,8 @@ export const LoginUser = createAsyncThunk("auth/login", async (userData, thunkAP
 
 
 
+
+
 const getCustomerfromLocalStorage = localStorage.getItem("customer")
     ? JSON.parse(localStorage.getItem("customer"))
     : null;
@@ -99,7 +101,9 @@ export const authSlice = createSlice({
                 if (state.isError === true) {
                     toast.error(action.error);
                 }
-            });
+            })
+            
+            ;
     },
 });
 

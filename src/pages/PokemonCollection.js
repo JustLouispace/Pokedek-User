@@ -53,20 +53,24 @@ export const PokemonCollection = () => {
     })
     : [];
 
-
   const handleMouseEnter = (event) => {
     const imageItem = event.currentTarget;
     const image = imageItem.querySelector('img');
     const overlay = imageItem.querySelector('.overlay');
-    image.style.opacity = 0.5;
-    overlay.style.opacity = 1;
+    if (image && overlay) {
+      image.style.opacity = 0.5;
+      overlay.style.opacity = 1;
+    }
   };
+
   const handleMouseLeave = (event) => {
     const imageItem = event.currentTarget;
     const image = imageItem.querySelector('img');
     const overlay = imageItem.querySelector('.overlay');
-    image.style.opacity = 1;
-    overlay.style.opacity = 0;
+    if (image && overlay) {
+      image.style.opacity = 1;
+      overlay.style.opacity = 0;
+    }
   };
   return (
     <div className="d-flex justify-content-center flex-column align-items-center">
@@ -229,21 +233,29 @@ export const PokemonCollection = () => {
             />
           </div>
         </div>
-        <ImageList sx={{ height: 1000, overflow: "scroll", scrollbarWidth: "none" }} cols={4} rowHeight="auto">
+        <ImageList sx={{ height: 1000, overflow: 'scroll', scrollbarWidth: 'none' }} cols={4} rowHeight="auto">
           {uniqueProducts.map((item) => (
-            <Link to={`/singleProduct/${item._id}`} key={item.img}>
+            <Link to={`/singleProduct/${item._id}`} key={item._id}>
               <ImageListItem
-                key={item.img}
+                key={item._id}
                 sx={{ width: '100%', height: '100%', padding: '15px', position: 'relative', cursor: 'pointer' }}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <img
-                  src={item.images[0].url}
-                  alt={item.title}
-                  loading="lazy"
-                  style={{ width: '100%', height: '25rem', objectFit: 'cover', opacity: 1, transition: 'opacity 0.3s ease' }}
-                />
+                {item.images && item.images[0]?.url && (
+                  <img
+                    src={item.images[0].url}
+                    alt={item.title}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '25rem',
+                      objectFit: 'cover',
+                      opacity: 1,
+                      transition: 'opacity 0.3s ease',
+                    }}
+                  />
+                )}
                 <div
                   className="overlay"
                   style={{

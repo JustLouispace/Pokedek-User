@@ -25,4 +25,4 @@ const login = async (userData) => {
   };
 
 
-export const authService = { register, login };
+export const authService = { register, login};

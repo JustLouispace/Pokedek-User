@@ -10,6 +10,8 @@ import Register from './pages/Register';
 import PokemonCollection from './pages/PokemonCollection';
 import  MyCollection  from './pages/MyCollection';
 import SingleProduct from './pages/SingleProduct';
+import Trainer from './pages/Trainer';
+import Request from './pages/Request';
 function App() {
   return (
     <>
@@ -24,6 +26,8 @@ function App() {
             <Route path="PokemonCollection" element={<PokemonCollection />}></Route>
             <Route path="my-collection/:slug" element={<MyCollection />}></Route>
             <Route path="singleProduct/:slug" element={<SingleProduct />} />
+            <Route path="/trainer" element={<Trainer />} />
+            <Route path="/Request" element={<Request />} />
           </Route>
         </Routes>
       </BrowserRouter>
