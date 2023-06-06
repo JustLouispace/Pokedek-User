@@ -15,8 +15,9 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { Box, TextField } from '@mui/material';
+import { Box, Select, TextField } from '@mui/material';
 
+import MenuItem from '@mui/material/MenuItem';
 
 
 function valuetext(valueHp) {
@@ -30,6 +31,8 @@ export const PokemonCollection = () => {
   const [value2, setValue2] = React.useState();
   const [filter, setFilter] = useState(null);
   const [value, setValue] = React.useState('null');
+  const [superType, setSuperType] = useState(null);
+  const [subType, setSubType] = useState(null);
   const defaultImageURL = "defaultImageURL";  // Replace with your default image URL
 
   const handleChange = (event) => {
@@ -37,42 +40,33 @@ export const PokemonCollection = () => {
     setValue(event.target.value);
   };
 
+
+  const handleSuperTypeChange = (event) => {
+    setSuperType(event.target.value);
+  };
+
+  const handleSubTypeChange = (event) => {
+    setSubType(event.target.value);
+  };
+
   const handleReset = () => {
     setFilter(null); // Reset the filter
     setValue(null);
+    setValue2('');
+    setSuperType(null);
+    setSubType(null);
   };
 
   const handleValue2Change = (event) => {
-    const inputValue = event.target.value;
-    if (inputValue === '') {
-      setValue2(null);
-    } else {
-      const [value2Min, value2Max] = inputValue.split(',').map(Number);
-      setValue2([value2Min, value2Max]);
-    }
+    setValue2(event.target.value);
   };
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
   };
 
-  const handleChange2 = (event, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
 
-    if (newValue[1] - newValue[0] < minDistance) {
-      if (activeThumb === 0) {
-        const clamped = Math.min(newValue[0], 100 - minDistance);
-        setValue2([clamped, clamped + minDistance]);
-      } else {
-        const clamped = Math.max(newValue[1], minDistance);
-        setValue2([clamped - minDistance, clamped]);
-      }
-    } else {
-      setValue2(newValue);
-    }
-  };
+
 
   const productStateRedux = useSelector((state) => state?.product?.product);
   const dispatch = useDispatch();
@@ -83,8 +77,14 @@ export const PokemonCollection = () => {
     if (filter) {
       url += `types=${filter}&`;
     }
+    if (superType) {
+      url += `supertype=${superType}&`; // This line is added
+    }
     if (value2) {
-      params.push(`hp=${value2.join('')}`); // This line is modified
+      params.push(`hp=${value2}`); // This line is modified
+    }
+    if (subType) {
+      url += `subtypes=${subType}&`;
     }
 
     url += params.join('&');
@@ -94,9 +94,9 @@ export const PokemonCollection = () => {
       const response = await axios.get(url);
       console.log(response);
       // Assuming that response.data is the array of products
-      if (Array.isArray(response.data)) {
+      if (Array.isArray(response.data.data)) {  // <-- changed line
         // setState with the data from the API
-        setProductState(response.data);
+        setProductState(response.data.data);  // <-- changed line
       } else {
         console.error("API response is not an array");
       }
@@ -106,7 +106,7 @@ export const PokemonCollection = () => {
   };
   useEffect(() => {
     getProducts();
-  }, [filter, value2]);
+  }, [filter, value2, superType, subType]);
 
   const uniqueProducts = Array.isArray(productState)
     ? Array.from(new Set(productState.map((product) => product._id))).map((_id) => {
@@ -154,7 +154,7 @@ export const PokemonCollection = () => {
                       <div className='d-flex'>
                         <FormControlLabel value="Lightning" control={<Radio />} label="Lightning" />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/ElectricType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                       <div className='d-flex'>
@@ -165,7 +165,7 @@ export const PokemonCollection = () => {
                           className="white-text bolder-text fs-5"
                         />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/FireType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                       <div className='d-flex'>
@@ -176,7 +176,7 @@ export const PokemonCollection = () => {
                           className="white-text bolder-text fs-5"
                         />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/GrassType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                       <div className='d-flex'>
@@ -187,7 +187,7 @@ export const PokemonCollection = () => {
                           className="white-text bolder-text fs-5"
                         />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/WaterType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                     </RadioGroup>
@@ -199,13 +199,13 @@ export const PokemonCollection = () => {
                     >
                       <div className='d-flex'>
                         <FormControlLabel
-                          value="Phychic"
+                          value="Psychic"
                           control={<Radio />}
-                          label="Phychic"
+                          label="Psychic"
                           className="white-text bolder-text fs-5"
                         />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/PsychicType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                       <div className='d-flex'>
@@ -216,7 +216,7 @@ export const PokemonCollection = () => {
                           className="white-text bolder-text fs-5"
                         />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/FightingType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                       <div className='d-flex'>
@@ -227,7 +227,7 @@ export const PokemonCollection = () => {
                           className="white-text bolder-text fs-5"
                         />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/SteelType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                       <div className='d-flex'>
@@ -238,7 +238,7 @@ export const PokemonCollection = () => {
                           className="white-text bolder-text fs-5"
                         />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/NormalType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                     </RadioGroup>
@@ -256,7 +256,7 @@ export const PokemonCollection = () => {
                           className="white-text bolder-text fs-5"
                         />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/DragonType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                       <div className='d-flex'>
@@ -267,7 +267,7 @@ export const PokemonCollection = () => {
                           className="white-text bolder-text fs-5"
                         />
                         <div>
-                          <img src="images/Poisonicon.png" alt="Start Icon" className="icon-element mb-3" />
+                          <img src="images/FairyType.png" alt="Start Icon" className="icon-element mb-3" />
                         </div>
                       </div>
                     </RadioGroup>
@@ -284,10 +284,33 @@ export const PokemonCollection = () => {
             <TextField
               label="Value2"
               variant="outlined"
+              value={value2}
               onChange={handleValue2Change}
-              placeholder="Min,Max"
+              placeholder="HP"
             />
           </div>
+          <FormControl>
+            <FormLabel>SuperType</FormLabel>
+            <Select
+              value={superType}
+              onChange={handleSuperTypeChange}
+            >
+              <MenuItem value={"Pokémon"}>Pokémon</MenuItem>
+              <MenuItem value={"Trainer"}>Trainer</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>SubTypes</FormLabel>
+            <Select
+              value={subType}
+              onChange={handleSubTypeChange}
+            >
+              <MenuItem value={"Basic"}>Basic</MenuItem>
+              <MenuItem value={"Stage 1"}>Stage 1</MenuItem>
+              <MenuItem value={"Stage 2"}>Stage 2</MenuItem>
+
+            </Select>
+          </FormControl>
         </div>
         <ImageList sx={{ height: 1000, overflow: "scroll", scrollbarWidth: "none" }} cols={4} rowHeight="auto">
           {productState.map((item) => (
@@ -302,7 +325,7 @@ export const PokemonCollection = () => {
                   src={item.images && item.images.length > 0 ? item.images[0].url : defaultImageURL}
                   alt={item.name}
                   loading="lazy"
-                  style={{ width: '100%', height: '25rem', objectFit: 'cover', opacity: 1, transition: 'opacity 0.3s ease' }}
+                  style={{ width: '10rem%', height: '28rem', objectFit: 'cover', opacity: 1, transition: 'opacity 0.3s ease' }}
                 />
                 <div
                   className="overlay"
