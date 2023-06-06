@@ -19,6 +19,7 @@ export const registerUser = createAsyncThunk("auth/register", async (userData, t
 export const LoginUser = createAsyncThunk("auth/login", async (userData, thunkAPI) => {
     try {
         return await authService.login(userData);
+
     } catch (error) {
         const serializableError = {
             message: error.message,
@@ -28,10 +29,6 @@ export const LoginUser = createAsyncThunk("auth/login", async (userData, thunkAP
         return thunkAPI.rejectWithValue(serializableError);
     }
 });
-
-
-
-
 
 const getCustomerfromLocalStorage = localStorage.getItem("customer")
     ? JSON.parse(localStorage.getItem("customer"))
@@ -86,7 +83,7 @@ export const authSlice = createSlice({
                     localStorage.setItem("token", token);
 
                     const decodedToken = jwtDecode(token);
-                    const userId = decodedToken.id || decodedToken._id;  // depends on how the id is named in the payload of the token
+                    const userId = decodedToken.id || decodedToken._id;
 
                     localStorage.setItem("userId", userId);
 
@@ -102,7 +99,7 @@ export const authSlice = createSlice({
                     toast.error(action.error);
                 }
             })
-            
+
             ;
     },
 });

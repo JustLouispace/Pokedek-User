@@ -31,6 +31,7 @@ const Login = () => {
     onSubmit: (values) => {
       console.log(values);
       dispatch(LoginUser(values));
+      window.location.href = '/';
     },
   });
 
@@ -86,7 +87,7 @@ const Login = () => {
                   </div>
                 </div>
                 <div className='d-flex justify-content-center align-items-center'>
-                  <button type="submit" disabled={!formik.values.agreeTerms} className="mb-5 col-6 btn Registerbtn">
+                  <button to="/" type="submit" disabled={!formik.values.agreeTerms} className="mb-5 col-6 btn Registerbtn">
                     Login
                   </button>
                 </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BiSearchAlt } from "react-icons/bi";
 import { MdCollectionsBookmark, MdSettings } from "react-icons/md";
@@ -6,11 +6,36 @@ import { AiOutlineUser } from "react-icons/ai";
 import { GoRequestChanges } from "react-icons/go";
 import { CgPokemon } from "react-icons/cg";
 import jwtDecode from 'jwt-decode';
-
+import axios from 'axios';
 
 const userId = localStorage.getItem("userId");
 
 const Header = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (userId) {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/user/${userId}`);
+          setUser(response.data);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      }
+    };
+
+    fetchUser();
+  }, [userId]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('MyCollection');
+    window.location.reload();
+  };
+
   return (
     <>
       <header className="header-top-strip py-3">
@@ -57,7 +82,7 @@ const Header = () => {
             </div>
             <div className="col-lg-6 col-md-9 col-12 text-lg-end">
               <div className="row justify-content-lg-end">
-                <div className="col-auto">
+                <div className="col-auto mt-auto mb-auto">
                   <Link
                     to="/PokemonCollection"
                     className="d-flex align-items-center gap-10 text-white"
@@ -66,7 +91,7 @@ const Header = () => {
                     <p className="align-center">My Collection</p>
                   </Link>
                 </div>
-                <div className="col-auto">
+                <div className="col-auto mt-auto mb-auto">
                   <Link
                     to={`/my-collection/${userId}`}
                     className="d-flex align-items-center gap-10 text-white"
@@ -75,7 +100,7 @@ const Header = () => {
                     <p className="align-center">My Collection</p>
                   </Link>
                 </div>
-                <div className="col-auto">
+                <div className="col-auto mt-auto mb-auto">
                   <Link
                     to="/Request"
                     className="d-flex align-items-center gap-10 text-white"
@@ -84,23 +109,27 @@ const Header = () => {
                     <p className="align-center">Request</p>
                   </Link>
                 </div>
-                <div className="col-auto">
-                  <Link
-                    to="/setting"
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <MdSettings size={30} alt="setting" />
-                    <p className="align-center">Setting</p>
-                  </Link>
-                </div>
-                <div className="col-auto">
-                  <Link
-                    to="/login"
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <AiOutlineUser size={30} alt="user" />
-                    <p className="align-center">Log in</p>
-                  </Link>
+                <div className="col-auto mt-auto mb-auto ml-2">
+                  {localStorage.getItem('token') ? (
+                    <button
+                      onClick={handleLogout}
+                      className="logout-button d-flex align-items-center gap-10 text-white"
+                    >
+                      <AiOutlineUser size={30} alt="user" />
+                      <div className="">
+                        <p className="align-center">Welcome</p>
+                        <p className="align-center">Log out</p>
+                      </div>
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      className="d-flex align-items-center gap-10 text-white"
+                    >
+                      <AiOutlineUser size={30} alt="user" />
+                      <p className="align-center">Log in</p>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

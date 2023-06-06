@@ -33,6 +33,9 @@ export const PokemonCollection = () => {
   const [value, setValue] = React.useState('null');
   const [superType, setSuperType] = useState(null);
   const [subType, setSubType] = useState(null);
+  const [page, setPage] = useState(1);
+  const [searchname, setSearchname] = useState('');
+  const limit = 20;
   const defaultImageURL = "defaultImageURL";  // Replace with your default image URL
 
   const handleChange = (event) => {
@@ -55,6 +58,7 @@ export const PokemonCollection = () => {
     setValue2('');
     setSuperType(null);
     setSubType(null);
+    setSearchname("");
   };
 
   const handleValue2Change = (event) => {
@@ -78,13 +82,17 @@ export const PokemonCollection = () => {
       url += `types=${filter}&`;
     }
     if (superType) {
-      url += `supertype=${superType}&`; // This line is added
+      url += `supertype=${superType}&`;
     }
     if (value2) {
-      params.push(`hp=${value2}`); // This line is modified
+      params.push(`hp=${value2}`);
     }
     if (subType) {
       url += `subtypes=${subType}&`;
+    }
+
+    if (searchname) {
+      url += `name=${searchname}&`; // Add searchname to the API request
     }
 
     url += params.join('&');
@@ -104,9 +112,13 @@ export const PokemonCollection = () => {
       console.error('There was an error!', error);
     }
   };
+
+
+
+
   useEffect(() => {
     getProducts();
-  }, [filter, value2, superType, subType]);
+  }, [filter, value2, superType, subType, searchname]);
 
   const uniqueProducts = Array.isArray(productState)
     ? Array.from(new Set(productState.map((product) => product._id))).map((_id) => {
@@ -136,8 +148,8 @@ export const PokemonCollection = () => {
     <div className="d-flex justify-content-center flex-column align-items-center">
       <div className="display-4 fw-bold mt-5">Pokemon Collection</div>
       <div className="store-wrapper home-wrapper-2 py-5 col-9">
-        <div className="container-xxl bg-gray p-5 rounded mb-5">
-          <div className='container-sorted col-4 mb-4'>
+        <div className="d-flex container-xxl bg-gray p-5 rounded mb-5">
+          <div className='container-sorted col-5 mb-4'>
             <Button variant="outlined" onClick={handleReset}>Reset Filter</Button>
             <Stack spacing={9} direction="row" >
               <Stack spacing={0} >
@@ -277,47 +289,57 @@ export const PokemonCollection = () => {
             </Stack>
 
           </div>
-          <div className='justify-content-center align-items-center w-50 bold-text fs-4' style={{ color: "white" }}>
-            <div>
-              Hp
+          <div className='d-flex col-7 justify-content-around align-items-center' style={{ color: "white" }}>
+            <div className='justify-content-center align-items-center  bold-text fs-4'>
+              <div>
+                Hp
+              </div>
+              <TextField
+                label="Value2"
+                variant="outlined"
+                value={value2}
+                onChange={handleValue2Change}
+                placeholder="HP"
+              />
             </div>
+            <FormControl>
+              <FormLabel>SuperType</FormLabel>
+              <Select
+                value={superType}
+                onChange={handleSuperTypeChange}
+              >
+                <MenuItem value={"Pokémon"}>Pokémon</MenuItem>
+                <MenuItem value={"Trainer"}>Trainer</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel>SubTypes</FormLabel>
+              <Select
+                value={subType}
+                onChange={handleSubTypeChange}
+              >
+                <MenuItem value={"Basic"}>Basic</MenuItem>
+                <MenuItem value={"Stage 1"}>Stage 1</MenuItem>
+                <MenuItem value={"Stage 2"}>Stage 2</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
-              label="Value2"
+              label="Search by Name"
               variant="outlined"
-              value={value2}
-              onChange={handleValue2Change}
-              placeholder="HP"
+              value={searchname}
+              onChange={(e) => setSearchname(e.target.value)}
             />
           </div>
-          <FormControl>
-            <FormLabel>SuperType</FormLabel>
-            <Select
-              value={superType}
-              onChange={handleSuperTypeChange}
-            >
-              <MenuItem value={"Pokémon"}>Pokémon</MenuItem>
-              <MenuItem value={"Trainer"}>Trainer</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel>SubTypes</FormLabel>
-            <Select
-              value={subType}
-              onChange={handleSubTypeChange}
-            >
-              <MenuItem value={"Basic"}>Basic</MenuItem>
-              <MenuItem value={"Stage 1"}>Stage 1</MenuItem>
-              <MenuItem value={"Stage 2"}>Stage 2</MenuItem>
 
-            </Select>
-          </FormControl>
+
+
         </div>
-        <ImageList sx={{ height: 1000, overflow: "scroll", scrollbarWidth: "none" }} cols={4} rowHeight="auto">
-          {productState.map((item) => (
-            <Link to={`/singleProduct/${item._id}`} key={item.images[0]._id}>
+        <div sx={{ height: 1000, overflow: 'scroll', scrollbarWidth: 'none' }} cols={4} rowHeight="auto" style={{ display: 'flex', flexWrap: 'wrap' }}>
+          {productState.slice((page - 1) * limit, page * limit).map((item) => (
+            <Link to={`/singleProduct/${item._id}`} key={item.images[0]._id} style={{ flex: '0 0 20%', padding: '15px', boxSizing: 'border-box' }}>
               <ImageListItem
                 key={item.images[0]._id}
-                sx={{ width: '100%', height: '100%', padding: '15px', position: 'relative', cursor: 'pointer' }}
+                sx={{ width: '100%', height: '100%', position: 'relative', cursor: 'pointer' }}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
@@ -325,7 +347,7 @@ export const PokemonCollection = () => {
                   src={item.images && item.images.length > 0 ? item.images[0].url : defaultImageURL}
                   alt={item.name}
                   loading="lazy"
-                  style={{ width: '10rem%', height: '28rem', objectFit: 'cover', opacity: 1, transition: 'opacity 0.3s ease' }}
+                  style={{ width: '100%', height: '22rem', objectFit: 'cover', opacity: 1, transition: 'opacity 0.3s ease' }}
                 />
                 <div
                   className="overlay"
@@ -343,7 +365,15 @@ export const PokemonCollection = () => {
               </ImageListItem>
             </Link>
           ))}
-        </ImageList>
+        </div>
+        <div>
+          <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
+            Previous
+          </Button>
+          <Button disabled={page === Math.ceil(productState.length / limit)} onClick={() => setPage(page + 1)}>
+            Next
+          </Button>
+        </div>
 
 
 
