@@ -8,7 +8,7 @@ function CardSlide() {
       image: "images/Card1.png",
       title: "This is a fifth title 5",
       description: "This is a fifth description",
-      clickEvent: "sliderClick"
+      clickEvent: "sliderClick",
     },
     {
       image: "images/Card2.png",

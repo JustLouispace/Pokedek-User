@@ -83,10 +83,11 @@ const Addrequest = () => {
 
   return (
     <div>
-      <h1 className="mb-4">Add Request</h1>
+      <h1 className="mb-4 text-center mt-5">Add Request</h1>
       <div>
-        <form onSubmit={formik.handleSubmit} className="d-flex gap-3 flex-column">
+        <form onSubmit={formik.handleSubmit} className="d-flex gap-3 flex-column col-8 mx-auto">
           <div>
+            <div className='mb-1 text-gray'>Name</div>
             <Custominput
               type="name"
               name="name"
@@ -101,6 +102,7 @@ const Addrequest = () => {
             </div>
           </div>
           <div>
+            <div className='mb-1 text-gray'>SuperType</div>
             <Custominput
               type="supertype"
               name="supertype"
@@ -115,6 +117,7 @@ const Addrequest = () => {
             </div>
           </div>
           <div>
+            <div className='mb-1 text-gray'>SubType</div>
             <Custominput
               type="subtypes"
               name="subtypes"
@@ -129,6 +132,7 @@ const Addrequest = () => {
             </div>
           </div>
           <div>
+            <div className='mb-1 text-gray'>Hp</div>
             <Custominput
               type="hp"
               name="hp"
@@ -142,11 +146,13 @@ const Addrequest = () => {
               {formik.touched.hp && formik.errors.hp}
             </div>
           </div>
+          <div className='mb-1 text-gray'>Type</div>
           <select
-            name="types1"
+            name="types"
+            type="types"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.types1}
+            value={formik.values.types}
             className="form-control py-3 mb-3"
             id=""
           >
@@ -166,22 +172,17 @@ const Addrequest = () => {
           {formik.touched.types1 && formik.errors.types1 && (
             <div className="error">{formik.errors.types1}</div>
           )}
-          <select
-            name="evolvesFrom1"
+          <div className='mb-1 text-gray'>Evolves From</div>
+          <Custominput
+            type="evolvesFrom"
+            label="Enter evolvesFrom"
+            name="evolvesFrom"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.evolvesFrom1}
-            className="form-control py-3 mb-3"
-          >
-            <option value="">Select EvolvesFrom</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
-          {formik.touched.evolvesFrom1 && formik.errors.evolvesFrom1 && (
-            <div className="error">{formik.errors.evolvesFrom1}</div>
-          )}
+            value={formik.values.evolvesFrom}
+          />
+          {formik.touched.evolvesFrom && formik.errors.evolvesFrom && <div className="error">{formik.errors.evolvesFrom}</div>}
+          <div className='mb-1 text-gray'>Piture</div>
           <div className="bg-white border-1 p-5 text-center">
             <Dropzone onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}>
               {({ getRootProps, getInputProps }) => (

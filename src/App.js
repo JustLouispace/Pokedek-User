@@ -12,6 +12,8 @@ import  MyCollection  from './pages/MyCollection';
 import SingleProduct from './pages/SingleProduct';
 import Trainer from './pages/Trainer';
 import Request from './pages/Request';
+import Resetpassword from './pages/Resetpassword';
+import Forgotpassword from './pages/Forgotpassword';
 function App() {
   return (
     <>
@@ -28,6 +30,9 @@ function App() {
             <Route path="singleProduct/:slug" element={<SingleProduct />} />
             <Route path="/trainer" element={<Trainer />} />
             <Route path="/Request" element={<Request />} />
+            <Route path="/forgot-password" element={<Forgotpassword />} />
+            <Route path="/api/user/reset-password/:slug" element={<Resetpassword />} />
+
           </Route>
         </Routes>
       </BrowserRouter>

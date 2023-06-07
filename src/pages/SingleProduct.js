@@ -13,7 +13,7 @@ const SingleProduct = () => {
     const [product, setProduct] = useState({});
     const [buttonText, setButtonText] = useState("Add to My Collection");
     const [myCollection, setMyCollection] = useState(getMyCollectionFromLocalStorage());
-
+    
     function getUserIdFromLocalStorage() {
         try {
             const userId = localStorage.getItem('userId');
@@ -73,6 +73,20 @@ const SingleProduct = () => {
         if (params?.slug) getProduct();
     }, [params?.slug]);
 
+    const RainbowBorder = styled('div')({
+        borderRadius: '10px',
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        border: '2px solid',
+        boxShadow: '0 0 10px #fff, 0 0 15px #fff, 0 0 20px #e60073, 0 0 35px #e60073, 0 0 40px #e60073, 0 0 55px #e60073, 0 0 75px #e60073',
+        zIndex: '1',
+        opacity: '0',
+        transition: 'opacity 0.6s ease-in-out',
+    });
+
 
     const CenteredContainer = styled('div')({
         display: 'flex',
@@ -113,14 +127,41 @@ const SingleProduct = () => {
         fontWeight: 'bold',
     });
 
+
+
+
     const CardBody = styled('div')({
         margin: '20px 0',
         textAlign: 'left',
     });
 
     const CardImage = styled('div')({
+        position: 'relative', // This is needed for absolute positioning of RainbowBorder
         margin: '20px 0',
+        '&:hover > div': { // This targets the RainbowBorder on hover
+            opacity: '1',
+        },
+        '&:hover > section > img': { // This targets the image on hover
+            transform: 'scale(1.1)', // This will scale (zoom) the image on hover
+            transition: 'all 0.3s ease', // This will animate the scale (zoom) effect
+        },
     });
+
+    const Card = styled('div')({
+        position: 'relative',
+        width: '300px',
+        height: '300px',
+        cursor: 'pointer',
+        transformStyle: 'preserve-3d',
+        transition: 'all 0.6s ease',
+        '&:hover': {
+            transform: 'rotateY(180deg)'
+        },
+        '&:hover > div': {
+            opacity: '1',
+        },
+    });
+
 
     const CardFooter = styled('div')({
         display: 'flex',
@@ -143,14 +184,16 @@ const SingleProduct = () => {
     return (
         <CenteredContainer>
             <CardDetail>
-                <div className='d-flex gap-20' style={{  flex: 1 }}>
-                    <div>
+
+
+                <div className='d-flex gap-20' style={{ flex: 1 }}>
+                    <CardImage>
                         {product.images && product.images.length > 0 && (
-                            <CardImage>
+                            <section class="cards">
                                 <img src={product.images[0].url} alt={product.name} />
-                            </CardImage>
+                            </section>
                         )}
-                    </div>
+                    </CardImage>
                     <div style={{ marginLeft: '1rem', justifyContent: 'center', alignItems: 'center' }}>
                         <div className='ml-4' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <CardHeader>

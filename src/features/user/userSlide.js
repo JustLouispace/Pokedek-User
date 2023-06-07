@@ -18,7 +18,9 @@ export const registerUser = createAsyncThunk("auth/register", async (userData, t
 
 export const LoginUser = createAsyncThunk("auth/login", async (userData, thunkAPI) => {
     try {
+        console.log(userData);
         return await authService.login(userData);
+        
 
     } catch (error) {
         const serializableError = {

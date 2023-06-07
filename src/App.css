@@ -8,6 +8,11 @@
   background-color: rgb(100, 99, 99);
 }
 
+.text-gray {
+  color: gray;
+}
+
+
 .bold-text {
   font-weight: bold;
 }
@@ -205,6 +210,18 @@ a {
   justify-content: space-between;
   width: 100%;
 }
+
+.filter-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+}
+
+.filter-panel-expanded {
+  max-height: 1000px;
+}
+
+
 /* End Pokemon Colec */
 
 
@@ -275,4 +292,12 @@ a {
   cursor: pointer;
 }
 
+.bg-whitegray{
+  background-color: #ffffff;
+}
+
 /* End Single Card */
+
+
+
+
